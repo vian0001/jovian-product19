@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mengonfigurasi koneksi internet di MikroTik menggunakan PPPoE dan DHCP</title>
+    <style>
+
+                /* Portfolio Button Styling */
+.portfolio-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: var(--text-primary);
+    border: none;
+    border-radius: 50px;
+    padding: 15px 25px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(37, 99, 235, 0.4);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.portfolio-button:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.6);
+}
+
+.portfolio-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent);
+    animation: shineEffect 3s infinite;
+}
+
+.portfolio-icon {
+    font-size: 1.2rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes shineEffect {
+    0% { left: -100%; }
+    20% { left: 100%; }
+    100% { left: 100%; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.attention-ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+    border: 2px solid var(--accent-color);
+    animation: ripple 2s infinite;
+    opacity: 0;
+}
+
+@keyframes ripple {
+    0% {
+        width: 100%;
+        height: 100%;
+        opacity: 0.8;
+    }
+    100% {
+        width: 200%;
+        height: 200%;
+        opacity: 0;
+    }
+}
+
+
+
+  {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+                    /* Styling untuk container gambar */
+
+    .image-container {
+      margin: 30px 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.4s ease;
+      max-width: 100%;
+      position: relative;
+    }
+
+    .image-container:hover {
+      transform: scale(1.02);
+      box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4);
+    }
+
+    .image-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: all 0.4s ease;
+    }
+
+    .image-container:hover img {
+      filter: brightness(1.1);
+    }
+
+    .image-caption {
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.7), transparent);
+      padding: 15px 20px;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .image-container:hover .image-caption {
+      transform: translateY(0);
+    }
+
+    @keyframes loadProgress { 0% { width: 0%; } 100% { width: 100%; } }
+    @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+    {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+ 
+
+* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --primary-color: #2563eb;
+        --secondary-color: #1e40af;
+        --accent-color: #06b6d4;
+        --success-color: #059669;
+        --warning-color: #d97706;
+        --danger-color: #dc2626;
+        --bg-primary: #0f172a;
+        --bg-secondary: #1e293b;
+        --bg-card: #334155;
+        --bg-light: #f8fafc;
+        --text-primary: #f1f5f9;
+        --text-secondary: #cbd5e1;
+        --text-muted: #94a3b8;
+        --border-color: #475569;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        color: var(--text-primary);
+        line-height: 1.6;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    /* Tech Background Pattern */
+    .tech-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -3;
+        background: 
+            radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 40% 80%, rgba(220, 38, 38, 0.08) 0%, transparent 50%);
+    }
+
+    .circuit-pattern {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+        opacity: 0.03;
+        background-image: 
+            linear-gradient(90deg, var(--primary-color) 1px, transparent 1px),
+            linear-gradient(var(--primary-color) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: circuitMove 20s linear infinite;
+    }
+
+    @keyframes circuitMove {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(50px, 50px); }
+    }
+
+    /* Floating particles */
+    .tech-particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+    }
+
+    .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: var(--accent-color);
+        border-radius: 50%;
+        opacity: 0.6;
+        animation: float linear infinite;
+    }
+
+    @keyframes float {
+        0% { 
+            transform: translateY(100vh) translateX(0px);
+            opacity: 0;
+        }
+        10% { 
+            opacity: 0.6;
+        }
+        90% { 
+            opacity: 0.6;
+        }
+        100% { 
+            transform: translateY(-100px) translateX(100px);
+            opacity: 0;
+        }
+    }
+
+    /* Header */
+    .header {
+        text-align: center;
+        padding: 100px 20px 80px;
+        background: linear-gradient(135deg, 
+            rgba(37, 99, 235, 0.1) 0%, 
+            rgba(6, 182, 212, 0.1) 50%, 
+            rgba(5, 150, 105, 0.1) 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent,
+            rgba(37, 99, 235, 0.1),
+            transparent
+        );
+        animation: headerScan 10s linear infinite;
+    }
+
+    @keyframes headerScan {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .main-title {
+        font-family: 'Inter', sans-serif;
+        font-size: 3.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color), var(--success-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 20px;
+        text-shadow: 0 0 50px rgba(37, 99, 235, 0.3);
+        animation: titleGlow 4s ease-in-out infinite alternate;
+        position: relative;
+    }
+
+    @keyframes titleGlow {
+        0% { filter: brightness(1); }
+        100% { filter: brightness(1.2); }
+    }
+
+    .subtitle {
+        font-size: 1.3rem;
+        color: var(--text-secondary);
+        margin-bottom: 40px;
+        font-weight: 300;
+        letter-spacing: 1px;
+    }
+
+    .author-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 30px;
+        max-width: 600px;
+        margin: 0 auto;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        animation: cardFloat 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes cardFloat {
+        0% { transform: translateY(0px); }
+        100% { transform: translateY(-10px); }
+    }
+
+    .card-header {
+        text-align: center;
+        font-size: 1.1rem;
+        color: var(--accent-color);
+        margin-bottom: 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .author-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+        text-align: left;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: var(--primary-color);
+        min-width: 80px;
+        margin-right: 15px;
+    }
+
+    .info-value {
+        color: var(--text-primary);
+        font-weight: 400;
+    }
+
+    /* Container */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 60px 20px;
+    }
+
+    /* Section styling */
+    .section {
+        background: linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.05) 0%, 
+            rgba(255, 255, 255, 0.02) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 40px;
+        margin: 40px 0;
+        position: relative;
+        backdrop-filter: blur(20px);
+        transition: all 0.4s ease;
+        animation: sectionSlide 0.8s ease-out;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .section:nth-child(even) {
+        animation: sectionSlideRight 0.8s ease-out;
+    }
+
+    @keyframes sectionSlide {
+        from { transform: translateX(-50px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes sectionSlideRight {
+        from { transform: translateX(50px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    .section:hover {
+        border-color: var(--primary-color);
+        box-shadow: 0 12px 48px rgba(37, 99, 235, 0.2);
+        transform: translateY(-8px);
+    }
+
+    .section-title {
+        font-family: 'Inter', sans-serif;
+        color: var(--primary-color);
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+        position: relative;
+        padding-left: 30px;
+    }
+
+    .section-title::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 30px;
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        border-radius: 2px;
+    }
+
+    /* Code blocks with typing effect */
+    .code-terminal {
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 25px;
+        margin: 25px 0;
+        font-family: 'JetBrains Mono', monospace;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .code-terminal::before {
+        content: '$ mikrotik@router:~';
+        color: var(--success-color);
+        font-weight: 600;
+        display: block;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .code-line {
+        color: var(--text-primary);
+        margin: 8px 0;
+        position: relative;
+        padding-left: 20px;
+        transition: all 0.3s ease;
+        opacity: 1;
+        width: fit-content;
+        font-family: 'JetBrains Mono', monospace;
+        white-space: pre-wrap;
+    }
+
+    .code-line.typing {
+        opacity: 1;
+        border-right: 2px solid var(--accent-color);
+        animation: blink-cursor 1s infinite;
+    }
+
+    .code-line.typed {
+        opacity: 1;
+        border-right: none;
+    }
+
+    @keyframes blink-cursor {
+        0%, 50% { border-color: var(--accent-color); }
+        51%, 100% { border-color: transparent; }
+    }
+
+    .code-line:hover {
+        background: rgba(37, 99, 235, 0.1);
+        padding-left: 25px;
+        border-radius: 6px;
+    }
+
+    .code-line::before {
+        content: '▶';
+        position: absolute;
+        left: 0;
+        color: var(--accent-color);
+        font-size: 0.8rem;
+    }
+
+    .comment {
+        color: var(--text-muted);
+        font-style: italic;
+    }
+
+    .string {
+        color: var(--warning-color);
+        font-weight: 400;
+    }
+
+    .keyword {
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    /* Alert boxes */
+    .tech-alert {
+        background: linear-gradient(135deg, 
+            rgba(37, 99, 235, 0.1), 
+            rgba(6, 182, 212, 0.1));
+        border: 1px solid var(--primary-color);
+        border-left: 4px solid var(--primary-color);
+        border-radius: 12px;
+        padding: 25px;
+        margin: 30px 0;
+        position: relative;
+        animation: alertPulse 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes alertPulse {
+        0% { box-shadow: 0 0 20px rgba(37, 99, 235, 0.2); }
+        100% { box-shadow: 0 0 30px rgba(37, 99, 235, 0.4); }
+    }
+
+    .tech-alert::before {
+        content: '🔧 TEKNOLOGI INFO';
+        position: absolute;
+        top: -12px;
+        left: 20px;
+        background: var(--bg-primary);
+        color: var(--primary-color);
+        padding: 5px 15px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: 20px;
+        border: 1px solid var(--primary-color);
+    }
+
+    .security-alert {
+        background: linear-gradient(135deg, 
+            rgba(220, 38, 38, 0.1), 
+            rgba(217, 119, 6, 0.1));
+        border: 1px solid var(--danger-color);
+        border-left: 4px solid var(--danger-color);
+        border-radius: 12px;
+        padding: 25px;
+        margin: 30px 0;
+        position: relative;
+        animation: securityBlink 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes securityBlink {
+        0% { border-left-color: var(--danger-color); }
+        100% { border-left-color: var(--warning-color); }
+    }
+
+    .security-alert::before {
+        content: '🛡️ KEAMANAN';
+        position: absolute;
+        top: -12px;
+        left: 20px;
+        background: var(--bg-primary);
+        color: var(--danger-color);
+        padding: 5px 15px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: 20px;
+        border: 1px solid var(--danger-color);
+    }
+
+    .conclusion-box {
+        background: linear-gradient(135deg, 
+            rgba(5, 150, 105, 0.1), 
+            rgba(37, 99, 235, 0.1));
+        border: 1px solid var(--success-color);
+        border-left: 4px solid var(--success-color);
+        border-radius: 12px;
+        padding: 25px;
+        margin: 30px 0;
+        position: relative;
+        animation: conclusionGlow 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes conclusionGlow {
+        0% { box-shadow: 0 0 20px rgba(5, 150, 105, 0.2); }
+        100% { box-shadow: 0 0 30px rgba(5, 150, 105, 0.4); }
+    }
+
+    .conclusion-box::before {
+        content: '📝 KESIMPULAN';
+        position: absolute;
+        top: -12px;
+        left: 20px;
+        background: var(--bg-primary);
+        color: var(--success-color);
+        padding: 5px 15px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: 20px;
+        border: 1px solid var(--success-color);
+    }
+
+    /* Bibliography */
+    .bibliography {
+        background: linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.08), 
+            rgba(255, 255, 255, 0.04));
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 20px;
+        padding: 40px;
+        margin-top: 60px;
+        backdrop-filter: blur(20px);
+        animation: biblioFade 1.5s ease-out;
+    }
+
+    @keyframes biblioFade {
+        from { opacity: 0; transform: translateY(50px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .bibliography h3 {
+        color: var(--accent-color);
+        font-family: 'Inter', sans-serif;
+        margin-bottom: 30px;
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .bibliography ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .bibliography li {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 15px;
+        line-height: 1.8;
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+        position: relative;
+        padding-left: 50px;
+    }
+
+    .bibliography li::before {
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        font-size: 1.2rem;
+    }
+
+    .bibliography li:hover {
+        color: var(--text-primary);
+        transform: translateX(10px);
+        border-color: var(--primary-color);
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(6, 182, 212, 0.05));
+    }
+
+    .bibliography a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        word-break: break-all;
+    }
+
+    .bibliography a:hover {
+        color: var(--accent-color);
+        text-decoration: underline;
+    }
+
+    /* Progress bar */
+    .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--success-color));
+        z-index: 1000;
+        transition: width 0.3s ease;
+        box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .main-title {
+            font-size: 2.5rem;
+        }
+        
+        .section {
+            padding: 25px 20px;
+            margin: 30px 0;
+        }
+        
+        .container {
+            padding: 40px 15px;
+        }
+
+        .code-terminal {
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        .author-info {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Smooth animations */
+    .fade-in {
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<!-- Tech Background -->
+<div class="tech-bg"></div>
+<div class="circuit-pattern"></div>
+<div class="tech-particles" id="techParticles"></div>
+
+<!-- Header -->
+<div class="header">
+    <h1 class="main-title">MIKROTIK ROUTEROS</h1>
+    <div class="subtitle">Mengonfigurasi Koneksi Internet Menggunakan PPPoE dan DHCP</div>
+    <div class="subtitle">Panduan lengkap mengonfigurasi koneksi internet di router MikroTik</div>
+    
+    <div class="author-card">
+        <div class="card-header">Informasi Penulis</div>
+        <div class="author-info">
+            <div class="info-item">
+                <span class="info-label">Penulis:</span>
+                <span class="info-value">Jovian Ekasakta</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Guru:</span>
+                <span class="info-value">Arief Wahyudin</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Kelas:</span>
+                <span class="info-value">XI TJKT 03</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Sekolah:</span>
+                <span class="info-value">Dwija Bhakti 01 Jombang</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <!-- Network Topology Section -->
+    <div class="section fade-in">
+        <h2 class="section-title">TOPOLOGI JARINGAN</h2>
+
+                                                <div class="image-container">
+          <img src="topologi.jpeg" alt="SERVICE IP pada MikroTik RouterOS">
+          <div class="image-caption">Tampilan topologi di gns3</div>
+        </div>
+        
+
+        
+        <p>Topologi jaringan yang digunakan untuk implementasi DNS di MikroTik terdiri dari komponen-komponen berikut:</p>
+        
+        <div class="tech-alert">
+            <p>Router MikroTik berfungsi sebagai DNS server dan DNS cache untuk seluruh jaringan lokal. Semua klien dalam jaringan akan menggunakan router sebagai DNS resolver utama.</p>
+        </div>
+        
+        <p>Berikut adalah komponen-komponen dalam topologi jaringan DNS:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">1. MikroTik Router</span> (192.168.88.1)</div>
+            <div class="code-line comment"># Berfungsi sebagai DNS server dan DNS cache</div>
+            <div class="code-line"><span class="keyword">2. Internet/ISP</span> → Sumber DNS Upstream</div>
+            <div class="code-line comment"># Menyediakan resolusi DNS untuk domain publik (8.8.8.8, 1.1.1.1)</div>
+            <div class="code-line"><span class="keyword">3. Jaringan LAN</span> (192.168.88.0/24)</div>
+            <div class="code-line comment"># Perangkat klien yang menggunakan layanan DNS MikroTik</div>
+            <div class="code-line"><span class="keyword">4. Server Internal</span> (192.168.88.254)</div>
+            <div class="code-line comment"># Server internal yang di-resolve melalui Static DNS</div>
+        </div>
+        
+        <p>Dalam topologi ini, MikroTik Router menangani semua permintaan DNS dari jaringan lokal. Untuk domain publik (seperti google.com), router akan meneruskan permintaan ke server DNS upstream (seperti 8.8.8.8). Untuk domain internal (seperti server.local), router akan menggunakan entri static DNS yang telah dikonfigurasi.</p>
+        
+        <div class="security-alert">
+            <p>Router MikroTik harus dikonfigurasi dengan benar untuk membatasi akses DNS hanya untuk jaringan internal. Ini mencegah router digunakan sebagai open DNS resolver yang dapat dimanfaatkan untuk serangan DNS amplification.</p>
+        </div>
+
+        <p>Dengan menggunakan topologi ini, kita dapat mengoptimalkan kinerja DNS dengan memanfaatkan fitur static DNS dan DNS cache yang ditawarkan oleh RouterOS.</p>
+    </div>
+</div>
+
+
+<div class="container">
+    <!-- Section 1 -->
+    <div class="section fade-in">
+        <h2 class="section-title">1. KONFIGURASI PPPoE CLIENT DI MIKROTIK</h2>
+
+                                                                <div class="image-container">
+          <img src="no  (1)-ink.jpeg" alt="SERVICE IP pada MikroTik RouterOS">
+          <div class="image-caption">KONFIGURASI PPPoE CLIENT DI MIKROTIK</div>
+        </div>
+        
+        
+        
+        <p>Dari sumber MikroTik Documentation (2023), PPPoE (Point-to-Point Protocol over Ethernet) adalah protokol jaringan yang memungkinkan perangkat terhubung ke server akses internet melalui koneksi Ethernet. PPPoE merupakan pengembangan dari protokol PPP yang sebelumnya digunakan dalam koneksi dial-up dan merupakan pengganti dari PPPoA.</p>
+        
+        <p>Untuk mengkonfigurasi PPPoE Client melalui CLI pada MikroTik, gunakan perintah berikut:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/interface pppoe-client add</span> name=<span class="string">pppoe-isp</span> interface=<span class="string">ether1</span> user=<span class="string">username</span> password=<span class="string">password</span></div>
+            <div class="code-line comment"># Membuat interface PPPoE client dengan nama 'pppoe-isp' di ether1</div>
+        </div>
+        
+        <p>Dari sumber MKController (2025), konfigurasi PPPoE Client pada MikroTik melibatkan beberapa parameter penting yang harus diisi, terutama username dan password yang diberikan oleh ISP serta interface yang terhubung ke jaringan ISP.</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/interface pppoe-client add</span> name=<span class="string">pppoe-isp</span> interface=<span class="string">ether1</span> user=<span class="string">username</span> password=<span class="string">password</span> add-default-route=<span class="string">yes</span> use-peer-dns=<span class="string">yes</span> default-route-distance=<span class="string">1</span></div>
+            <div class="code-line comment"># Parameter tambahan: add-default-route=yes akan menambahkan rute default secara otomatis</div>
+            <div class="code-line comment"># use-peer-dns=yes akan menggunakan DNS server dari ISP</div>
+        </div>
+        
+        <div class="tech-alert">
+            <p>Untuk memeriksa status koneksi PPPoE yang sudah dibuat, gunakan perintah:</p>
+            <p><code>/interface pppoe-client monitor 0</code> (angka 0 adalah nomor indeks interface PPPoE)</p>
+        </div>
+        
+        <p>Dari sumber SystemZone (2021), setelah konfigurasi PPPoE client berhasil, diperlukan juga konfigurasi NAT untuk memastikan klien di jaringan lokal dapat mengakses internet melalui koneksi PPPoE tersebut:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/ip firewall nat add</span> chain=<span class="string">srcnat</span> out-interface=<span class="string">pppoe-isp</span> action=<span class="string">masquerade</span></div>
+            <div class="code-line comment"># Menambahkan aturan NAT untuk koneksi internet</div>
+        </div>
+        
+        <p>Untuk memantau koneksi PPPoE yang aktif:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/ppp active print</span></div>
+            <div class="code-line comment"># Menampilkan semua koneksi PPP aktif termasuk PPPoE</div>
+        </div>
+        
+        <p>Jika perlu memutuskan dan menghubungkan kembali koneksi PPPoE, gunakan perintah berikut:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/interface pppoe-client disable</span> pppoe-isp</div>
+            <div class="code-line comment"># Menonaktifkan interface PPPoE client</div>
+            <div class="code-line"><span class="keyword">/interface pppoe-client enable</span> pppoe-isp</div>
+            <div class="code-line comment"># Mengaktifkan kembali interface PPPoE client</div>
+        </div>
+
+        <div class="security-alert">
+            <p>Dari sumber Forum MikroTik (2018), pastikan bahwa password PPPoE tidak disimpan dalam bentuk plaintext di router untuk menghindari risiko keamanan. Sebaiknya gunakan fitur enkripsi password di MikroTik.</p>
+        </div>
+
+        <div class="conclusion-box">
+            <strong>Dari 3 pendapat tersebut dapat disimpulkan bahwa</strong> konfigurasi PPPoE Client di MikroTik adalah cara umum untuk menghubungkan router ke ISP yang menggunakan autentikasi username dan password. Dengan menggunakan perintah CLI yang tepat, koneksi PPPoE dapat dikonfigurasi dengan mudah dan dilengkapi dengan fitur routing dan NAT untuk berbagi koneksi internet ke jaringan lokal.
+        </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section fade-in">
+        <h2 class="section-title">2. KONFIGURASI DHCP CLIENT DI MIKROTIK</h2>
+
+                                                                <div class="image-container">
+          <img src="no  (2)-ink.jpeg" alt="SERVICE IP pada MikroTik RouterOS">
+          <div class="image-caption">KONFIGURASI DHCP CLIENT DI MIKROTIK</div>
+        </div>
+        
+        
+        
+        <p>Dari sumber MikroTik Documentation (2024), DHCP Client pada RouterOS memungkinkan router untuk mendapatkan alamat IP secara otomatis dari DHCP Server. Client akan menerima alamat IP, netmask, gateway default, dan alamat DNS server yang akan ditambahkan ke interface dan tabel routing secara dinamis.</p>
+        
+        <p>Untuk mengkonfigurasi DHCP Client melalui CLI, gunakan perintah berikut:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/ip dhcp-client add</span> interface=<span class="string">ether1</span> disabled=<span class="string">no</span></div>
+            <div class="code-line comment"># Membuat dan mengaktifkan DHCP client pada interface ether1</div>
+        </div>
+        
+        <p>Dari sumber MKController (2025), konfigurasi DHCP Client sangat sederhana tetapi dapat diperkaya dengan beberapa parameter tambahan:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/ip dhcp-client add</span> interface=<span class="string">ether1</span> add-default-route=<span class="string">yes</span> use-peer-dns=<span class="string">yes</span> use-peer-ntp=<span class="string">yes</span></div>
+            <div class="code-line comment"># Parameter add-default-route=yes: menambahkan rute default dari DHCP server</div>
+            <div class="code-line comment"># use-peer-dns=yes: menggunakan DNS server dari DHCP server</div>
+            <div class="code-line comment"># use-peer-ntp=yes: menggunakan NTP server dari DHCP server</div>
+        </div>
+        
+        <div class="tech-alert">
+            <p>Untuk melihat status dan detail DHCP client yang telah dikonfigurasi:</p>
+            <p><code>/ip dhcp-client print detail</code></p>
+        </div>
+        
+        <p>Dari sumber SystemZone (2021), konfigurasi DHCP Client pada MikroTik juga memerlukan pengaturan NAT untuk memastikan klien di jaringan lokal dapat mengakses internet:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/ip firewall nat add</span> chain=<span class="string">srcnat</span> out-interface=<span class="string">ether1</span> action=<span class="string">masquerade</span></div>
+            <div class="code-line comment"># Menambahkan aturan NAT menggunakan interface yang dikonfigurasi sebagai DHCP client</div>
+        </div>
+        
+        <p>Untuk mengkonfigurasi gateway LAN agar klien lokal dapat berkomunikasi melalui router MikroTik:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/ip address add</span> address=<span class="string">192.168.88.1/24</span> interface=<span class="string">ether2</span></div>
+            <div class="code-line comment"># Menambahkan alamat IP untuk gateway LAN pada interface ether2</div>
+        </div>
+        
+        <div class="security-alert">
+            <p>Dari sumber MikroTik Documentation (2024), jika interface yang digunakan oleh DHCP client adalah bagian dari konfigurasi VRF, maka rute default dan rute lain yang diterima dari server DHCP akan ditambahkan ke tabel routing VRF.</p>
+        </div>
+
+        <div class="conclusion-box">
+            <strong>Dari 3 pendapat tersebut dapat disimpulkan bahwa</strong> konfigurasi DHCP Client di MikroTik adalah cara termudah untuk mendapatkan alamat IP secara otomatis dari ISP yang mendukung DHCP. Dengan beberapa baris perintah CLI, router dapat dikonfigurasi untuk mendapatkan semua parameter jaringan secara otomatis dan berbagi koneksi internet ke jaringan lokal melalui NAT.
+        </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section fade-in">
+        <h2 class="section-title">3. KONFIGURASI DHCP SERVER UNTUK JARINGAN LOKAL</h2>
+
+                                                                <div class="image-container">
+          <img src="no  (3)-ink.jpeg" alt="SERVICE IP pada MikroTik RouterOS">
+          <div class="image-caption">KONFIGURASI DHCP SERVER UNTUK JARINGAN LOKAL</div>
+        </div>
+        
+        
+        
+        <p>Dari sumber MikroTik Documentation (2024), DHCP Server pada RouterOS memungkinkan distribusi alamat IP secara otomatis ke perangkat dalam jaringan. Implementasi ini sesuai dengan RFC 2131 dan mendukung fungsi dasar seperti pemberian lease alamat IP, gateway default, nama domain, dan informasi server DNS serta WINS.</p>
+        
+        <p>Langkah pertama untuk mengkonfigurasi DHCP Server adalah membuat IP Pool:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/ip pool add</span> name=<span class="string">dhcp-pool</span> ranges=<span class="string">192.168.88.10-192.168.88.254</span></div>
+            <div class="code-line comment"># Membuat pool alamat IP untuk DHCP server</div>
+        </div>
+        
+        <p>Dari sumber MKController (2025), setelah membuat IP pool, langkah selanjutnya adalah membuat DHCP server dan jaringannya:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/ip dhcp-server add</span> name=<span class="string">dhcp-lan</span> interface=<span class="string">ether2</span> address-pool=<span class="string">dhcp-pool</span></div>
+            <div class="code-line comment"># Membuat DHCP server dengan nama 'dhcp-lan' pada interface ether2</div>
+            <div class="code-line"><span class="keyword">/ip dhcp-server network add</span> address=<span class="string">192.168.88.0/24</span> gateway=<span class="string">192.168.88.1</span> dns-server=<span class="string">8.8.8.8,8.8.4.4</span></div>
+            <div class="code-line comment"># Menambahkan jaringan untuk DHCP server dengan gateway dan DNS server</div>
+        </div>
+        
+        <div class="tech-alert">
+            <p>Alternatif lebih cepat untuk konfigurasi DHCP server adalah menggunakan wizard DHCP setup:</p>
+            <p><code>/ip dhcp-server setup</code></p>
+            <p>Wizard ini akan memandu Anda melalui proses konfigurasi dengan beberapa pertanyaan.</p>
+        </div>
+        
+        <p>Dari sumber Timigate (2017), untuk melihat klien yang mendapatkan alamat IP dari DHCP server:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/ip dhcp-server lease print</span></div>
+            <div class="code-line comment"># Menampilkan daftar lease DHCP yang diberikan kepada klien</div>
+        </div>
+        
+        <p>Untuk menetapkan alamat IP statis bagi klien tertentu:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/ip dhcp-server lease add</span> address=<span class="string">192.168.88.50</span> mac-address=<span class="string">00:11:22:33:44:55</span> client-id=<span class="string">"komputer-lab-1"</span></div>
+            <div class="code-line comment"># Memberikan alamat IP statis berdasarkan MAC address</div>
+        </div>
+        
+        <div class="security-alert">
+            <p>Dari sumber MikroTik Documentation (2024), untuk menemukan server DHCP rogue (tidak sah) di jaringan Anda, gunakan fitur DHCP Alert. Ini akan memantau interface ethernet untuk semua respons DHCP dan memeriksa apakah respons tersebut berasal dari server DHCP yang valid.</p>
+            <p><code>/ip dhcp-server alert</code></p>
+        </div>
+
+        <div class="conclusion-box">
+            <strong>Dari 3 pendapat tersebut dapat disimpulkan bahwa</strong> konfigurasi DHCP Server pada MikroTik penting untuk memudahkan manajemen alamat IP di jaringan lokal. Dengan beberapa langkah sederhana menggunakan CLI, administrator dapat membuat pool alamat IP, mengatur server DHCP, dan menentukan parameter jaringan yang akan didistribusikan ke klien. Fitur tambahan seperti lease statis dan alert DHCP juga tersedia untuk manajemen jaringan yang lebih baik.
+        </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="section fade-in">
+        <h2 class="section-title">4. MEMONITOR DAN MENGELOLA KONEKSI INTERNET</h2>
+        
+        <p>Dari sumber MikroTik Documentation (2023), RouterOS menyediakan berbagai perintah untuk memantau status koneksi internet. Untuk koneksi PPPoE, perintah monitor sangat berguna untuk melihat detail koneksi secara real-time:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/interface pppoe-client monitor</span> pppoe-isp</div>
+            <div class="code-line comment"># Memantau status dan parameter koneksi PPPoE</div>
+        </div>
+        
+        <p>Dari sumber Forum MikroTik (2018), untuk mengelola koneksi PPPoE yang ada, Anda dapat menggunakan perintah-perintah berikut:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/ppp active print</span></div>
+            <div class="code-line comment"># Melihat daftar semua koneksi PPP aktif</div>
+            <div class="code-line"><span class="keyword">/ppp active remove</span> [find where name="pppoe-isp"]</div>
+            <div class="code-line comment"># Memutus koneksi PPP yang aktif</div>
+        </div>
+        
+        <div class="tech-alert">
+            <p>Untuk koneksi DHCP Client, monitoring dilakukan dengan cara berikut:</p>
+            <p><code>/ip dhcp-client print detail</code></p>
+        </div>
+        
+        <p>Dari sumber MKController (2025), untuk memonitor penggunaan bandwidth pada koneksi internet:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/tool torch</span> interface=<span class="string">pppoe-isp</span></div>
+            <div class="code-line comment"># Memantau trafik realtime pada interface koneksi internet (PPPoE)</div>
+            <div class="code-line"><span class="keyword">/interface monitor-traffic</span> pppoe-isp</div>
+            <div class="code-line comment"># Alternatif untuk memantau lalu lintas pada interface tertentu</div>
+        </div>
+        
+        <p>Untuk memeriksa konektivitas dengan server eksternal atau internet:</p>
+        
+        <div class="code-terminal">
+            <div class="code-line"><span class="keyword">/ping</span> 8.8.8.8</div>
+            <div class="code-line comment"># Menguji konektivitas ke DNS Google</div>
+            <div class="code-line"><span class="keyword">/tool traceroute</span> google.com</div>
+            <div class="code-line comment"># Melacak rute paket ke google.com</div>
+        </div>
+        
+        <div class="security-alert">
+            <p>Dari sumber SystemZone (2021), ketika router MikroTik mendapatkan IP publik dari ISP (baik melalui PPPoE atau DHCP), disarankan untuk menerapkan aturan firewall untuk melindungi router dari serangan eksternal.</p>
+            <p><code>/ip firewall filter add chain=input connection-state=new src-address=!192.168.88.0/24 action=drop</code></p>
+        </div>
+
+        <div class="conclusion-box">
+            <strong>Dari 3 pendapat tersebut dapat disimpulkan bahwa</strong> monitoring dan pengelolaan koneksi internet pada MikroTik dapat dilakukan dengan berbagai perintah CLI yang menyediakan informasi detail tentang status koneksi, penggunaan bandwidth, dan konektivitas jaringan. Dengan tool seperti monitor, torch, ping, dan traceroute, administrator dapat dengan mudah mendiagnosis masalah koneksi dan memastikan kinerja optimal koneksi internet.
+        </div>
+    </div>
+
+    <!-- Bibliography -->
+    <div class="bibliography">
+        <h3>DAFTAR PUSTAKA</h3>
+        <ul>
+            <li><strong>Forum MikroTik.</strong> 2018. <em>PPPoE client disconnect and connect command</em>. <a href="https://forum.mikrotik.com/viewtopic.php?t=101492" target="_blank">https://forum.mikrotik.com/viewtopic.php?t=101492</a>. Diakses pada 4 September 2025, pukul 08:15 WIB.</li>
+            
+            <li><strong>MikroTik Documentation.</strong> 2023. <em>PPPoE - RouterOS</em>. <a href="https://help.mikrotik.com/docs/spaces/ROS/pages/2031625/PPPoE" target="_blank">https://help.mikrotik.com/docs/spaces/ROS/pages/2031625/PPPoE</a>. Diakses pada 4 September 2025, pukul 08:30 WIB.</li>
+            
+            <li><strong>MikroTik Documentation.</strong> 2024. <em>First Time Configuration - RouterOS</em>. <a href="https://help.mikrotik.com/docs/spaces/ROS/pages/328151/First+Time+Configuration" target="_blank">https://help.mikrotik.com/docs/spaces/ROS/pages/328151/First+Time+Configuration</a>. Diakses pada 4 September 2025, pukul 08:45 WIB.</li>
+            
+            <li><strong>MikroTik Documentation.</strong> 2024. <em>DHCP - RouterOS</em>. <a href="https://help.mikrotik.com/docs/spaces/ROS/pages/24805500/DHCP" target="_blank">https://help.mikrotik.com/docs/spaces/ROS/pages/24805500/DHCP</a>. Diakses pada 4 September 2025, pukul 09:05 WIB.</li>
+            
+            <li><strong>MKController.</strong> 2025. <em>PPPoE Client on Mikrotik: How to configure PPPoE Client on Mikrotik</em>. <a href="https://mkcontroller.com/how-to-configure-pppoe-client-on-mikrotik/" target="_blank">https://mkcontroller.com/how-to-configure-pppoe-client-on-mikrotik/</a>. Diakses pada 4 September 2025, pukul 09:20 WIB.</li>
+            
+            <li><strong>MKController.</strong> 2025. <em>Mikrotik DHCP Client in Minutes: Complete Guide</em>. <a href="https://mkcontroller.com/configuring-mikrotik-dhcp-client-in-minutes-complete-guide/" target="_blank">https://mkcontroller.com/configuring-mikrotik-dhcp-client-in-minutes-complete-guide/</a>. Diakses pada 4 September 2025, pukul 09:35 WIB.</li>
+            
+            <li><strong>SystemZone.</strong> 2021. <em>MikroTik Configuration with PPPoE WAN Connection</em>. <a href="https://systemzone.net/mikrotik-configuration-with-pppoe-wan-connection/" target="_blank">https://systemzone.net/mikrotik-configuration-with-pppoe-wan-connection/</a>. Diakses pada 4 September 2025, pukul 09:50 WIB.</li>
+            
+            <li><strong>SystemZone.</strong> 2021. <em>MikroTik Configuration with DHCP WAN Connection</em>. <a href="https://systemzone.net/mikrotik-configuration-with-dhcp-wan-connection/" target="_blank">https://systemzone.net/mikrotik-configuration-with-dhcp-wan-connection/</a>. Diakses pada 4 September 2025, pukul 10:10 WIB.</li>
+            
+            <li><strong>Timigate.</strong> 2017. <em>Configuring DHCP client on a Mikrotik Router</em>. <a href="https://timigate.com/2017/09/configuring-dhcp-client-on-mikrotik.html" target="_blank">https://timigate.com/2017/09/configuring-dhcp-client-on-mikrotik.html</a>. Diakses pada 4 September 2025, pukul 10:25 WIB.</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    // Tech particles animation
+    function createTechParticles() {
+        const particlesContainer = document.getElementById('techParticles');
+        const particleCount = 50;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+            
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    // Scroll progress
+    function updateScrollProgress() {
+        const scrollTop = document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercent = (scrollTop / scrollHeight) * 100;
+        document.getElementById('scrollProgress').style.width = scrollPercent + '%';
+    }
+
+    // Typing effect for code lines
+    function typeText(element, text, speed = 30) {
+        return new Promise(resolve => {
+            element.classList.add('typing');
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML = text.slice(0, i + 1);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    element.classList.remove('typing');
+                    element.classList.add('typed');
+                    resolve();
+                }
+            }
+            type();
+        });
+    }
+
+    // Animate code blocks with typing effect
+    function animateCodeBlocks() {
+        const codeTerminals = document.querySelectorAll('.code-terminal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const codeLines = entry.target.querySelectorAll('.code-line');
+                    let delay = 0;
+                    
+                    codeLines.forEach((line, index) => {
+                        const originalText = line.innerHTML;
+                        setTimeout(async () => {
+                            await typeText(line, originalText, 20);
+                        }, delay);
+                        delay += 500; // 500ms delay between lines
+                    });
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        codeTerminals.forEach(terminal => {
+            observer.observe(terminal);
+        });
+    }
+
+    // Fade in animation on scroll
+    function animateOnScroll() {
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        fadeElements.forEach(element => {
+            observer.observe(element);
+        });
+    }
+
+    // Code block hover effects
+    function addCodeEffects() {
+        const codeLines = document.querySelectorAll('.code-line');
+        codeLines.forEach(line => {
+            line.addEventListener('mouseenter', () => {
+                if (line.classList.contains('typed')) {
+                    line.style.transform = 'translateX(5px)';
+                    line.style.background = 'rgba(37, 99, 235, 0.1)';
+                }
+            });
+            line.addEventListener('mouseleave', () => {
+                line.style.transform = 'translateX(0)';
+                line.style.background = 'transparent';
+            });
+        });
+    }
+
+    // Section hover effects
+    function addSectionEffects() {
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(section => {
+            section.addEventListener('mouseenter', () => {
+                section.style.transform = 'translateY(-8px)';
+            });
+            section.addEventListener('mouseleave', () => {
+                section.style.transform = 'translateY(0)';
+            });
+        });
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', () => {
+        createTechParticles();
+        animateOnScroll();
+        animateCodeBlocks();
+        addCodeEffects();
+        addSectionEffects();
+        
+        // Scroll events
+        window.addEventListener('scroll', updateScrollProgress);
+        
+        // Smooth scrolling for better UX
+        document.documentElement.style.scrollBehavior = 'smooth';
+    });
+
+    // Add responsive particle count
+    function adjustParticleCount() {
+        const width = window.innerWidth;
+        const particlesContainer = document.getElementById('techParticles');
+        const currentParticles = particlesContainer.children.length;
+        const targetParticles = width < 768 ? 20 : width < 1200 ? 35 : 50;
+        
+        if (currentParticles !== targetParticles) {
+            particlesContainer.innerHTML = '';
+            for (let i = 0; i < targetParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+    }
+
+    window.addEventListener('resize', adjustParticleCount);
+
+           // Anti-Copy JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    // Mencegah seleksi teks
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // Mencegah penyalinan teks (Ctrl+C)
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+        // Opsional: Tampilkan pesan
+        alert('Maaf, penyalinan konten pada halaman ini tidak diizinkan!');
+        return false;
+    });
+
+    // Mencegah pemotongan teks (Ctrl+X)
+    document.addEventListener('cut', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // Mencegah penempelan teks (Ctrl+V)
+    document.addEventListener('paste', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // Mencegah klik kanan
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // Mencegah drag & drop
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+});
+
+
+   
+</script>
+</head>
+</html>
