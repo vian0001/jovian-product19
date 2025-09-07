@@ -784,39 +784,15 @@
         <h2 class="section-title">TOPOLOGI JARINGAN</h2>
 
                                                 <div class="image-container">
-          <img src="topologi.jpeg" alt="SERVICE IP pada MikroTik RouterOS">
+          <img src="topologi.png" alt="SERVICE IP pada MikroTik RouterOS">
           <div class="image-caption">Tampilan topologi di gns3</div>
         </div>
-        
 
-        
-        <p>Topologi jaringan yang digunakan untuk implementasi DNS di MikroTik terdiri dari komponen-komponen berikut:</p>
-        
-        <div class="tech-alert">
-            <p>Router MikroTik berfungsi sebagai DNS server dan DNS cache untuk seluruh jaringan lokal. Semua klien dalam jaringan akan menggunakan router sebagai DNS resolver utama.</p>
-        </div>
-        
-        <p>Berikut adalah komponen-komponen dalam topologi jaringan DNS:</p>
-        
-        <div class="code-terminal">
-            <div class="code-line"><span class="keyword">1. MikroTik Router</span> (192.168.88.1)</div>
-            <div class="code-line comment"># Berfungsi sebagai DNS server dan DNS cache</div>
-            <div class="code-line"><span class="keyword">2. Internet/ISP</span> → Sumber DNS Upstream</div>
-            <div class="code-line comment"># Menyediakan resolusi DNS untuk domain publik (8.8.8.8, 1.1.1.1)</div>
-            <div class="code-line"><span class="keyword">3. Jaringan LAN</span> (192.168.88.0/24)</div>
-            <div class="code-line comment"># Perangkat klien yang menggunakan layanan DNS MikroTik</div>
-            <div class="code-line"><span class="keyword">4. Server Internal</span> (192.168.88.254)</div>
-            <div class="code-line comment"># Server internal yang di-resolve melalui Static DNS</div>
-        </div>
-        
-        <p>Dalam topologi ini, MikroTik Router menangani semua permintaan DNS dari jaringan lokal. Untuk domain publik (seperti google.com), router akan meneruskan permintaan ke server DNS upstream (seperti 8.8.8.8). Untuk domain internal (seperti server.local), router akan menggunakan entri static DNS yang telah dikonfigurasi.</p>
-        
-        <div class="security-alert">
-            <p>Router MikroTik harus dikonfigurasi dengan benar untuk membatasi akses DNS hanya untuk jaringan internal. Ini mencegah router digunakan sebagai open DNS resolver yang dapat dimanfaatkan untuk serangan DNS amplification.</p>
+                                                        <div class="image-container">
+          <img src="topologi deskripsi.png" alt="SERVICE IP pada MikroTik RouterOS">
+          <div class="image-caption">Tampilan topologi di gns3</div>
         </div>
 
-        <p>Dengan menggunakan topologi ini, kita dapat mengoptimalkan kinerja DNS dengan memanfaatkan fitur static DNS dan DNS cache yang ditawarkan oleh RouterOS.</p>
-    </div>
 </div>
 
 
