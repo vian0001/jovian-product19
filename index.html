@@ -1055,6 +1055,88 @@
         </div>
     </div>
 
+
+    <!-- Section 5 -->
+<div class="section fade-in">
+    <h2 class="section-title">5. PENGUJIAN ARP DI DHCP SERVER</h2>
+    
+    <div class="image-container">
+      <img src="no 5-ink.jpeg" alt="Pengujian ARP di DHCP Server">
+      <div class="image-caption">Pengujian ARP di DHCP Server untuk mencegah akses IP ilegal</div>
+    </div>
+    
+    <p>Pengujian ARP di DHCP Server memungkinkan Anda mencegah perangkat dengan IP yang diatur secara statis (tidak berasal dari DHCP server) mengakses gateway atau jaringan Anda. Ini dapat dilakukan dengan mengaktifkan opsi "Add-ARP" pada konfigurasi DHCP server.</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/ip dhcp-server set</span> [find name="dhcp-lan"] add-arp=<span class="string">yes</span></div>
+        <div class="code-line comment"># Mengaktifkan fitur Add-ARP pada DHCP server</div>
+    </div>
+    
+    <p>Salah satu metode terbaik untuk mengamankan jaringan MikroTik dari IP ilegal adalah dengan mengatur mode ARP interface ke "reply-only". Dengan mode ini, interface hanya akan merespons permintaan yang berasal dari kombinasi alamat IP/MAC yang terdaftar sebagai entri statis dalam tabel IP/ARP.</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/interface ethernet set</span> [find where name="ether2"] arp=<span class="string">reply-only</span></div>
+        <div class="code-line comment"># Mengatur mode ARP pada interface LAN ke "reply-only"</div>
+    </div>
+    
+    <div class="tech-alert">
+        <p>Untuk melihat entri ARP yang terdaftar pada router:</p>
+        <p><code>/ip arp print</code></p>
+    </div>
+    
+    <p>Pengujian dilakukan dengan mengkonfigurasi sebuah komputer menggunakan alamat IP statis dalam rentang jaringan LAN yang tidak terdaftar di DHCP server. Jika konfigurasi ARP security telah berhasil, perangkat tersebut tidak akan dapat berkomunikasi dengan gateway.</p>
+    
+    <div class="security-alert">
+        <p>Perlu diingat bahwa konfigurasi DHCP server normal saja tidak cukup aman untuk jaringan Anda. Sebaiknya terapkan strategi DHCP server statis di mana alamat MAC harus disediakan untuk mendapatkan alamat IP dari server DHCP, dikombinasikan dengan strategi NAT IP tunggal.</p>
+    </div>
+
+    <div class="conclusion-box">
+        <strong>Kesimpulan:</strong> Pengujian ARP di DHCP Server merupakan langkah penting untuk mengamankan jaringan dari akses IP ilegal. Dengan mengonfigurasi Add-ARP dan mode ARP reply-only, administrator dapat memastikan bahwa hanya perangkat yang diizinkan dengan kombinasi MAC dan IP yang valid yang dapat mengakses jaringan.
+    </div>
+</div>
+
+<!-- Section 6 -->
+<div class="section fade-in">
+    <h2 class="section-title">6. PENGUJIAN NEIGHBOR DISCOVERY</h2>
+    
+    <div class="image-container">
+      <img src="no 6-ink.jpeg" alt="Menyembunyikan Perangkat dengan Neighbor Discovery">
+      <div class="image-caption">Menyembunyikan perangkat MikroTik dari Neighbor Discovery</div>
+    </div>
+    
+    <p>Neighbor Discovery adalah protokol yang memungkinkan kita menemukan perangkat yang kompatibel dengan MNDP (MikroTik Neighbor Discovery Protocol), CDP (Cisco Discovery Protocol), atau LLDP (Link Layer Discovery Protocol) dalam domain broadcast Layer2. Meskipun berguna untuk memetakan jaringan, fitur ini juga dapat menjadi risiko keamanan.</p>
+    
+    <p>Jika MikroTik Anda terhubung ke internet dan MNDP masih berjalan, Anda mungkin mengekspos lebih banyak informasi daripada yang Anda pikirkan. Alamat MAC, identitas sistem, bahkan visibilitas perangkat Anda dapat bocor ke siapa saja yang melakukan pemindaian.</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/ip neighbor discovery-settings set</span> discover-interface-list=<span class="string">none</span></div>
+        <div class="code-line comment"># Menonaktifkan Neighbor Discovery pada semua interface</div>
+    </div>
+    
+    <p>Atau menggunakan metode per-interface:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/ip neighbor discovery set</span> [find] discover=<span class="string">no</span></div>
+        <div class="code-line comment"># Menonaktifkan Neighbor Discovery pada semua interface</div>
+    </div>
+    
+    <div class="tech-alert">
+        <p>Alternatif lain adalah menggunakan firewall untuk memblokir protokol MNDP:</p>
+        <p><code>/ip firewall filter add chain=output action=drop src-port=5678 protocol=udp comment="Block MNDP" disabled=no</code></p>
+    </div>
+    
+    <p>Untuk memastikan perangkat MikroTik Anda tidak terlihat oleh orang lain, gunakan komputer lain dengan Winbox, klik tombol "Neighbors", dan verifikasi bahwa router MikroTik Anda tidak muncul dalam daftar.</p>
+    
+    <div class="security-alert">
+        <p>Ketika Neighbor Discovery dinonaktifkan, ingat bahwa Anda juga tidak akan dapat menemukan perangkat MikroTik lainnya menggunakan fitur Neighbors pada Winbox. Anda harus menggunakan alamat IP untuk terhubung ke perangkat.</p>
+    </div>
+
+    <div class="conclusion-box">
+        <strong>Kesimpulan:</strong> Menyembunyikan perangkat dengan menonaktifkan Neighbor Discovery adalah langkah keamanan penting, terutama jika MikroTik Anda dapat diakses dari internet. Meskipun terlihat seperti perubahan kecil, langkah ini bisa menghindarkan Anda dari masalah keamanan yang serius dengan mencegah orang lain melihat dan mendapatkan informasi tentang perangkat jaringan Anda.
+    </div>
+</div>
+
+
     <!-- Bibliography -->
     <div class="bibliography">
         <h3>DAFTAR PUSTAKA</h3>
@@ -1238,48 +1320,7 @@
 
     window.addEventListener('resize', adjustParticleCount);
 
-           // Anti-Copy JavaScript
-document.addEventListener('DOMContentLoaded', function() {
-    // Mencegah seleksi teks
-    document.addEventListener('selectstart', function(e) {
-        e.preventDefault();
-        return false;
-    });
-
-    // Mencegah penyalinan teks (Ctrl+C)
-    document.addEventListener('copy', function(e) {
-        e.preventDefault();
-        // Opsional: Tampilkan pesan
-        alert('Maaf, penyalinan konten pada halaman ini tidak diizinkan!');
-        return false;
-    });
-
-    // Mencegah pemotongan teks (Ctrl+X)
-    document.addEventListener('cut', function(e) {
-        e.preventDefault();
-        return false;
-    });
-
-    // Mencegah penempelan teks (Ctrl+V)
-    document.addEventListener('paste', function(e) {
-        e.preventDefault();
-        return false;
-    });
-
-    // Mencegah klik kanan
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        return false;
-    });
-
-    // Mencegah drag & drop
-    document.addEventListener('dragstart', function(e) {
-        e.preventDefault();
-        return false;
-    });
-});
-
-
+ 
    
 </script>
 </head>
